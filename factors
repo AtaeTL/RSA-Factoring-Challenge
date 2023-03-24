@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Define the check_factor function
+check_factor() {
+    num=$1
+    for ((i=2; i<num; i++)); do
+        if ((num % i == 0)); then
+            echo "$num=$i*$((num/i))"
+            return
+        fi
+    done
+}
+
+# Read the input file and call the check_factor function for each number
+while read num; do
+    check_factor $num
+done < $1
