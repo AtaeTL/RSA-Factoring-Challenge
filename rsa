@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+function is_prime {
+  num=$1
+  if ((num < 2)); then
+    return 1
+  elif ((num == 2)); then
+    return 0
+  elif ((num % 2 == 0)); then
+    return 1
+  fi
+  for ((i=3; i*i<=num; i+=2)); do
+    if ((num % i == 0)); then
+      return 1
+    fi
+  done
+  return 0
+}
+
+if [ $# -ne 1 ]
+then
+  echo 'Usage: rsa <file>'
+  exit 1
+else
+  num=$(cat "$1")
+  for ((i=2; i<=num/2; i++)); do
+    if ((num % i == 0)); then
+      if is_prime "$i" && is_prime "$((num/i))"; then
+        echo "$num=$i*$((num/i))"
+        exit 0
+      fi
+    fi
+  done
+  echo "Failed to factorize $num"
+  exit 1
+fi
